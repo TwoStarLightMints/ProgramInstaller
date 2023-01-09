@@ -1,0 +1,2 @@
+# Ignore all database files created for testing
+*.db
