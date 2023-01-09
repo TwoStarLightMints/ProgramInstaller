@@ -1,3 +1,5 @@
+from tempfile import TemporaryDirectory
+
 class ProgramManager:
     def __init__(self):
-        pass
+        self._temp_dir = TemporaryDirectory()
