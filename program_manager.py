@@ -37,3 +37,6 @@ class ProgramManager:
             sql_cur.execute(f"INSERT INTO programs VALUES ({program.program_name}, {program.download_link})")
         
         sql_con.commit()
+
+if __name__ == "__main__":
+    pass
