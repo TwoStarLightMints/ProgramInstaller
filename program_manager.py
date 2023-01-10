@@ -35,6 +35,10 @@ class ProgramManager:
             sql_con.close()
         else:
             sql_con = sqlite3.connect(self._DATABASE_)
+            sql_cur = sql_con.cursor()
+            
+            sql_cur.execute("CREATE TABLE programs (program_name, download_link)")
+
             sql_con.close()
 
     def write_programs(self):
@@ -44,17 +48,14 @@ class ProgramManager:
         sql_con = sqlite3.connect("install_programs.db")
         sql_cur = sql_con.cursor()
         
-        res = sql_cur.execute("SELECT name FROM sqlite_master")
-        
-        if res.fetchone() is None:
-            sql_cur.execute("CREATE TABLE programs (program_name, download_link)")
-        
         for program in self.program_list:
             res = sql_cur.execute(f"SELECT * FROM programs WHERE program_name='{program.program_name}'")
 
             if res.fetchone() == None:
+                print(f"Writing - {program}")
+                sql_cur.execute(f"INSERT INTO programs VALUES ('{program.program_name}', '{program.download_link}')")
+            else:
                 continue
-            sql_cur.execute(f"INSERT INTO programs VALUES ({program.program_name}, {program.download_link})")
         
         sql_con.commit()
     
