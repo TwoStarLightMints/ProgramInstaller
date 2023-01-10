@@ -4,7 +4,7 @@ from os import system
 class TUI_Mngr:
     def __init__(self) -> None:
         self.manager = ProgramManager()
-        self.method_dict(self.get_option("Just enter 1: ", "int"))
+        self.method_dict(self.get_option("Just enter 2: ", "int"))
 
     def print_menu(self):
         print("-- PROGRAM INSTALLER --")
