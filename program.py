@@ -7,6 +7,9 @@ class Program:
         self.program_name: str = program_name
         self.temp_path: str = join(temp_dir, f"{program_name}.exe")
     
+    def __str__(self) -> str:
+        return f"{self.program_name}: {self.download_link}"
+    
     def install(self) -> None:
         """
         Called in order to install the program from the download link
