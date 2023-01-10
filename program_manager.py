@@ -19,8 +19,6 @@ class ProgramManager:
 
         for row in res.fetchall():
             self.program_list.append(Program(row[1], row[2]))
-        
-        print(self.program_list)
 
     def write_programs(self):
         sql_con = sqlite3.connect("install_programs.db")
