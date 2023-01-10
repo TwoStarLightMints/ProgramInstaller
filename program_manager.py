@@ -83,8 +83,9 @@ class ProgramManager:
         
         for program in self.program_list:
             program.install()
-
-        listdir(self._temp_dir)
+    
+    def __del__(self):
+        self._temp_dir.cleanup()
 
 if __name__ == "__main__":
     pass
