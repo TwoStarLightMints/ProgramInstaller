@@ -7,7 +7,7 @@ class Program:
         self.program_name: str = program_name
         self.temp_path: str = join(temp_dir, f"{program_name}.exe")
     
-    def install(self) -> int:
+    def install(self) -> None:
         """
         Called in order to install the program from the download link
         """
@@ -16,10 +16,8 @@ class Program:
         
         if not req.ok:
             print(f"Install attempt resulted in bad status code: {req.status_code}")
-            return INSTALLER_ENUM_HERE
+            return
         
         print("Request successful, now downloading installer...")
         with open(self.temp_path, "wb") as file:
             file.write(req.content)
-
-        return INSTALLER_ENUM_HERE
