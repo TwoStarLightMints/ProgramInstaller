@@ -3,19 +3,22 @@ from os import system
 
 class TUI_Mngr:
     def __init__(self) -> None:
-        self.help()
+        print(self.get_option("Enter a number", "int"))
 
-    def menu(self):
+    def print_menu(self):
         print("-- PROGRAM INSTALLER --")
     
-    def get_option(self, prompt: str):
+    def get_option(self, prompt: str, type: str):
         resp = input(prompt)
 
-        try:
-            return int(resp)
+        if type == "int":
+            try:
+                return int(resp)
+            except ValueError:
+                print("Invalid input, please enter an integer.")
+                return self.get_option(prompt, type)
         
-        except ValueError:
-            return resp
+        return resp
 
     def help(self):
         print("Program Installer")
