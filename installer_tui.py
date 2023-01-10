@@ -3,13 +3,14 @@ from os import system
 
 class TUI_Mngr:
     def __init__(self) -> None:
+        self.manager = ProgramManager()
         self.method_dict(self.get_option("Just enter 1: ", "int"))
 
     def print_menu(self):
         print("-- PROGRAM INSTALLER --")
         print("Main Menu")
-        print("1. Help")
-        print("")
+        print("\t1. Help")
+        print("\t2. View list of programs")
     
     def get_option(self, prompt: str, type: str):
         resp = input(prompt)
@@ -25,6 +26,7 @@ class TUI_Mngr:
     def method_dict(self, choice: int):
         methods = {
             1: self.this_help,
+            2: self.show_programs,
         }
 
         methods.get(choice)()
@@ -35,6 +37,15 @@ class TUI_Mngr:
         print("\nTo run the script just use:")
         print("\n\t$ python main.py")
         print("\nMore to come.")
+    
+    def show_programs(self):
+        for program in self.manager.program_list:
+            print(program)
+    
+    def run():
+        running = True
+        while running:
+            pass
 
 if __name__ == "__main__":
     tui = TUI_Mngr()
