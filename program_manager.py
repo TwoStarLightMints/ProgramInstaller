@@ -16,6 +16,8 @@ class ProgramManager:
     def __init__(self):
         self._temp_dir = TemporaryDirectory()
         self.program_list: list[Program] = list()
+
+        self.get_programs()
     
     def get_programs(self):
         """
