@@ -24,3 +24,6 @@ class Program:
         print("Request successful, now downloading installer...")
         with open(self.temp_path, "wb") as file:
             file.write(req.content)
+
+if __name__ == "__main__":
+    pass
