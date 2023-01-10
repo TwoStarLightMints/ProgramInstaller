@@ -39,8 +39,7 @@ class TUI_Mngr:
         print("\nMore to come.")
     
     def show_programs(self):
-        for program in self.manager.program_list:
-            print(program)
+        self.manager.show_programs()
     
     def run():
         running = True

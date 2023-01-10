@@ -37,6 +37,10 @@ class ProgramManager:
             sql_cur.execute(f"INSERT INTO programs VALUES ({program.program_name}, {program.download_link})")
         
         sql_con.commit()
+    
+    def show_programs(self):
+        for program in self.program_list:
+            print(program)
 
 if __name__ == "__main__":
     pass
