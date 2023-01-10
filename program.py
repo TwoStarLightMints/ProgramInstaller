@@ -5,7 +5,7 @@ class Program:
     def __init__(self, download_link: str, program_name: str, temp_dir: str) -> None:
         self.download_link: str = download_link
         self.program_name: str = program_name
-        self.temp_path: str = join(temp_dir, f"{program_name}.exe")
+        self.temp_path: str = join(temp_dir, f"{program_name}_SETUP.exe")
     
     def __str__(self) -> str:
         return f"{self.program_name}: {self.download_link}"
