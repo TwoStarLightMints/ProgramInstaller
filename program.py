@@ -1,10 +1,5 @@
 import requests
 from os.path import join
-from enum import Enum
-
-class InstallerEnums (Enum):
-    INSTALL_SUCCESS = 0
-    INSTALL_FAILED = 1
 
 class Program:
     def __init__(self, download_link: str, program_name: str, temp_dir: str) -> None:
