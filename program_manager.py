@@ -37,6 +37,3 @@ class ProgramManager:
             sql_cur.execute(f"INSERT INTO programs VALUES ({program.program_name}, {program.download_link})")
         
         sql_con.commit()
-
-    def print_options(self):
-        pass
