@@ -11,8 +11,16 @@ class ProgramManager:
         self._temp_dir = TemporaryDirectory()
         self.program_list: list[Program] = list()
     
-    def get_progrms(self):
-        pass
+    def get_programs(self):
+        sql_con = sqlite3.connect("install_programs.db")
+        sql_cur = sql_con.cursor()
+
+        res = sql_cur.execute("SELECT * FROM programs")
+
+        for row in res.fetchall():
+            self.program_list.append(Program(row[1], row[2]))
+        
+        print(self.program_list)
 
     def write_programs(self):
         sql_con = sqlite3.connect("install_programs.db")
