@@ -100,4 +100,4 @@ class TUI_Mngr:
         self.manager._temp_dir.cleanup()
 
 if __name__ == "__main__":
-    tui = TUI_Mngr()
+    pass
