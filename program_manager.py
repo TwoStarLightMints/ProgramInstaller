@@ -1,4 +1,5 @@
 from tempfile import TemporaryDirectory
+import requests
 import sqlite3
 from program import Program
 
@@ -41,6 +42,24 @@ class ProgramManager:
     def show_programs(self):
         for program in self.program_list:
             print(program)
+        
+    def add_program(self):
+        prog_name = input("Please input a name for the program: ")
+        link_ready = False
+        link = ""
+
+        while not link_ready:
+            link = input("Please enter the download link for the program: ")
+            
+            print("\nTesting link...")
+            if link != "":
+                resp = requests.get(link)
+
+                if resp.ok:
+                    print("Download link is valid, now adding program...")
+                    self.program_list.append(Program(link, prog_name))
+                else:
+                    print("Download link responded with an error code, please check your spelling or enter a different link.")
 
 if __name__ == "__main__":
     pass
