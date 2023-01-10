@@ -1,5 +1,6 @@
 from program_manager import ProgramManager
-from os import system
+from os import system, listdir, chdir, getcwd
+from time import sleep
 
 class TUI_Mngr:
     def __init__(self) -> None:
@@ -8,7 +9,7 @@ class TUI_Mngr:
 
     def print_menu(self):
         print("-- PROGRAM INSTALLER --")
-        print("\nMain Menu")
+        print("\nMain Menu\n")
         print("\t1. Help")
         print("\t2. View list of programs")
         print("\t3. Add a program")
@@ -33,7 +34,10 @@ class TUI_Mngr:
             4: self.install_programs,
         }
 
-        methods.get(choice)()
+        try:
+            methods.get(choice)()
+        except TypeError:
+            print("Invalid selection, please enter a valid option.")
 
     def this_help(self):
         print("Program Installer")
@@ -50,17 +54,32 @@ class TUI_Mngr:
     
     def install_programs(self):
         self.manager.download_setups()
+
+        cwd = getcwd()
+
+        q = input("Continue with install? (y/n) ")
+
+        if q == "y":
+            chdir(self.manager._temp_dir.name)
+
+            for setup in listdir():
+                system(setup)
+            
+            chdir(cwd)
     
     def run(self):
         running = True
+
         while running:
             self.print_menu()
-            print("")
             choice = self.get_option("Enter your choice: ", "int")
             if choice == 0:
-                running = 0
+                running = False
                 continue
             self.method_dict(choice)
+
+        print("Cleaning up...")
+        self.manager._temp_dir.cleanup()
 
 if __name__ == "__main__":
     tui = TUI_Mngr()
