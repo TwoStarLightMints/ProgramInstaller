@@ -57,7 +57,8 @@ class ProgramManager:
 
                 if resp.ok:
                     print("Download link is valid, now adding program...")
-                    self.program_list.append(Program(link, prog_name))
+                    self.program_list.append(Program(link, prog_name, self._temp_dir.name))
+                    link_ready = True
                 else:
                     print("Download link responded with an error code, please check your spelling or enter a different link.")
 
