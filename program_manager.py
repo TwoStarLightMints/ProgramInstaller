@@ -59,22 +59,8 @@ class ProgramManager:
         Exposes functionality to add a program to the list of programs.
         """
         prog_name = input("Please input a name for the program: ")
-        link_ready = False
-        link = ""
-
-        while not link_ready:
-            link = input("Please enter the download link for the program: ")
-            
-            print("\nTesting link...")
-            if link != "":
-                resp = requests.get(link)
-
-                if resp.ok:
-                    print("Download link is valid, now adding program...")
-                    self.program_list.append(Program(link, prog_name, self._temp_dir.name))
-                    link_ready = True
-                else:
-                    print("Download link responded with an error code, please check your spelling or enter a different link.")
+        link = input(f"Please enter the download link for {prog_name}: ")
+        self.program_list.append(Program(link, prog_name, self._temp_dir.name))
     
     def download_setups(self):
         """
