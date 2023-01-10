@@ -12,6 +12,7 @@ class TUI_Mngr:
         print("\t1. Help")
         print("\t2. View list of programs")
         print("\t3. Add a program")
+        print("\t4. Install all programs")
     
     def get_option(self, prompt: str, type: str):
         resp = input(prompt)
@@ -29,6 +30,7 @@ class TUI_Mngr:
             1: self.this_help,
             2: self.show_programs,
             3: self.add_program,
+            4: self.install_programs,
         }
 
         methods.get(choice)()
@@ -45,6 +47,9 @@ class TUI_Mngr:
     
     def add_program(self):
         self.manager.add_program()
+    
+    def install_programs(self):
+        self.manager.download_setups()
     
     def run(self):
         running = True
