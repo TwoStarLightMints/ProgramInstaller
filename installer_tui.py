@@ -16,6 +16,7 @@ class TUI_Mngr:
         print("\t3. Add a program")
         print("\t4. Install all programs")
         print("\t9. Save changes")
+        print("\t0. Quit")
         print("\n")
     
     def get_option(self, prompt: str, type: str):
