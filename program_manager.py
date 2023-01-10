@@ -3,6 +3,7 @@ from os import listdir
 import requests
 import sqlite3
 from program import Program
+from time import sleep
 
 # sqlite3 database structure
 #   Table: programs
@@ -83,9 +84,6 @@ class ProgramManager:
         
         for program in self.program_list:
             program.install()
-    
-    def __del__(self):
-        self._temp_dir.cleanup()
 
 if __name__ == "__main__":
     pass
