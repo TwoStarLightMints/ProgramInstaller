@@ -15,6 +15,8 @@ class TUI_Mngr:
         print("\t2. View list of programs")
         print("\t3. Add a program")
         print("\t4. Install all programs")
+        print("\t9. Save changes")
+        print("\n")
     
     def get_option(self, prompt: str, type: str):
         resp = input(prompt)
@@ -33,6 +35,7 @@ class TUI_Mngr:
             2: self.show_programs,
             3: self.add_program,
             4: self.install_programs,
+            9: self.save_changes,
         }
 
         try:
@@ -73,7 +76,11 @@ class TUI_Mngr:
         q = input("Save changes? (y/n) ")
 
         if q == "y":
-            self.manager.write_programs()
+            if self._STATE_CHANGE_:
+                self.manager.write_programs()
+                self._STATE_CHANGE_ = False
+            else:
+                print("No changes to save")
     
     def run(self):
         running = True
@@ -85,6 +92,9 @@ class TUI_Mngr:
                 running = False
                 continue
             self.method_dict(choice)
+        
+        if self._STATE_CHANGE_:
+            self.save_changes()
 
         print("Cleaning up...")
         self.manager._temp_dir.cleanup()
