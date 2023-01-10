@@ -3,6 +3,7 @@ from os import system, listdir, chdir, getcwd
 from time import sleep
 
 class TUI_Mngr:
+    _STATE_CHANGE_ = False
     def __init__(self) -> None:
         self.manager = ProgramManager()
         self.run()
@@ -51,6 +52,7 @@ class TUI_Mngr:
     
     def add_program(self):
         self.manager.add_program()
+        self._STATE_CHANGE_ = True
     
     def install_programs(self):
         self.manager.download_setups()
@@ -66,6 +68,12 @@ class TUI_Mngr:
                 system(setup)
             
             chdir(cwd)
+    
+    def save_changes(self):
+        q = input("Save changes? (y/n) ")
+
+        if q == "y":
+            self.manager.write_programs()
     
     def run(self):
         running = True
