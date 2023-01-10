@@ -8,7 +8,7 @@ class TUI_Mngr:
 
     def print_menu(self):
         print("-- PROGRAM INSTALLER --")
-        print("Main Menu")
+        print("\nMain Menu")
         print("\t1. Help")
         print("\t2. View list of programs")
         print("\t3. Add a program")
@@ -55,6 +55,7 @@ class TUI_Mngr:
         running = True
         while running:
             self.print_menu()
+            print("")
             choice = self.get_option("Enter your choice: ", "int")
             if choice == 0:
                 running = 0
