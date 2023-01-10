@@ -1,5 +1,6 @@
 from tempfile import TemporaryDirectory
 from os import listdir
+from os.path import isfile
 import requests
 import sqlite3
 from program import Program
@@ -10,6 +11,8 @@ from time import sleep
 #       Rows: (Program Name, Download Link)
 
 class ProgramManager:
+    _DATABASE_ = "install_programs.db"
+
     def __init__(self):
         self._temp_dir = TemporaryDirectory()
         self.program_list: list[Program] = list()
@@ -18,13 +21,19 @@ class ProgramManager:
         """
         Reads all programs currently stored in the local sqlite3 database and loads them into program list
         """
-        sql_con = sqlite3.connect("install_programs.db")
-        sql_cur = sql_con.cursor()
+        if isfile(self._DATABASE_):
+            sql_con = sqlite3.connect(self._DATABASE_)
+            sql_cur = sql_con.cursor()
 
-        res = sql_cur.execute("SELECT * FROM programs")
+            res = sql_cur.execute("SELECT * FROM programs")
 
-        for row in res.fetchall():
-            self.program_list.append(Program(row[1], row[2]))
+            for row in res.fetchall():
+                self.program_list.append(Program(row[1], row[2]))
+
+            sql_con.close()
+        else:
+            sql_con = sqlite3.connect(self._DATABASE_)
+            sql_con.close()
 
     def write_programs(self):
         """
