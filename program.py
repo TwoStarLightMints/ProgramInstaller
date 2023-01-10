@@ -15,7 +15,11 @@ class Program:
         Called in order to install the program from the download link
         """
         print("Sending HTTP request...")
-        req = requests.get(self.download_link)
+        try:
+            req = requests.get(self.download_link)
+        except (requests.exceptions.MissingSchema, requests.exceptions.InvalidURL):
+            print("Bad URL provided, check the url provided.")
+
         
         if not req.ok:
             print(f"Install attempt resulted in bad status code: {req.status_code}")
