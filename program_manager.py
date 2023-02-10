@@ -14,32 +14,34 @@ class ProgramManager:
     _DATABASE_ = "install_programs.db"
 
     def __init__(self):
+        self.db_con = self.retrieve_connection(self._DATABASE_)
         self._temp_dir = TemporaryDirectory()
         self.program_list: list[Program] = list()
 
         self.get_programs()
+    
+    def retrieve_connection(self, db_file):
+        if isfile(db_file):
+            return sqlite3.connect(db_file)
+        else:
+            sql_con = sqlite3.connect(db_file)
+            sql_cur = sql_con.cursor()
+            
+            sql_cur.execute("CREATE TABLE programs (program_name, download_link)")
+
+            return sql_con
     
     def get_programs(self):
         """
         Reads all programs currently stored in the local sqlite3 database and loads them into program list
         """
         if isfile(self._DATABASE_):
-            sql_con = sqlite3.connect(self._DATABASE_)
-            sql_cur = sql_con.cursor()
+            sql_cur = self.db_con.cursor()
 
             res = sql_cur.execute("SELECT * FROM programs")
 
             for row in res.fetchall():
                 self.program_list.append(Program(row[1], row[0], self._temp_dir.name))
-
-            sql_con.close()
-        else:
-            sql_con = sqlite3.connect(self._DATABASE_)
-            sql_cur = sql_con.cursor()
-            
-            sql_cur.execute("CREATE TABLE programs (program_name, download_link)")
-
-            sql_con.close()
 
     def write_programs(self):
         """
@@ -63,8 +65,10 @@ class ProgramManager:
         """
         Prints out all the programs in the program list using their to string method.
         """
+        print("(Program Name): (Program Download Link)")
         for program in self.program_list:
             print(program)
+        
         
     def add_program(self):
         """
