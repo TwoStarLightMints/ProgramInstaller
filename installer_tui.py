@@ -1,6 +1,7 @@
 from program_manager import ProgramManager
 from os import system, listdir, chdir, getcwd
 from time import sleep
+import subprocess as sp
 
 class TUI_Mngr:
     _STATE_CHANGE_ = False
@@ -69,7 +70,7 @@ class TUI_Mngr:
             chdir(self.manager._temp_dir.name)
 
             for setup in listdir():
-                system(setup)
+                sp.run(setup)
             
             chdir(cwd)
     
@@ -99,6 +100,7 @@ class TUI_Mngr:
 
         print("Cleaning up...")
         self.manager._temp_dir.cleanup()
+        self.manager.db_con.close()
 
 if __name__ == "__main__":
     pass
