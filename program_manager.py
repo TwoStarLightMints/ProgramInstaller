@@ -46,8 +46,7 @@ class ProgramManager:
         """
         Writes all programs currently in the program list to the local sqlite3 database.
         """
-        sql_con = sqlite3.connect("install_programs.db")
-        sql_cur = sql_con.cursor()
+        sql_cur = self.db_con.cursor()
         
         for program in self.program_list:
             res = sql_cur.execute(f"SELECT * FROM programs WHERE program_name='{program.program_name}'")
@@ -58,7 +57,7 @@ class ProgramManager:
             else:
                 continue
         
-        sql_con.commit()
+        self.db_con.commit()
     
     def show_programs(self):
         """
