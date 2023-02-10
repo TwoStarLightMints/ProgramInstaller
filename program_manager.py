@@ -35,13 +35,12 @@ class ProgramManager:
         """
         Reads all programs currently stored in the local sqlite3 database and loads them into program list
         """
-        if isfile(self._DATABASE_):
-            sql_cur = self.db_con.cursor()
+        sql_cur = self.db_con.cursor()
 
-            res = sql_cur.execute("SELECT * FROM programs")
+        res = sql_cur.execute("SELECT * FROM programs")
 
-            for row in res.fetchall():
-                self.program_list.append(Program(row[1], row[0], self._temp_dir.name))
+        for row in res.fetchall():
+            self.program_list.append(Program(row[1], row[0], self._temp_dir.name))
 
     def write_programs(self):
         """
