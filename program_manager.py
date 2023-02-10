@@ -30,7 +30,6 @@ class ProgramManager:
             res = sql_cur.execute("SELECT * FROM programs")
 
             for row in res.fetchall():
-                print(f"{row}")
                 self.program_list.append(Program(row[1], row[0], self._temp_dir.name))
 
             sql_con.close()
