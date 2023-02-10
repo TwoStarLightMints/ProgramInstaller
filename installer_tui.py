@@ -16,6 +16,7 @@ class TUI_Mngr:
         print("\t2. View list of programs")
         print("\t3. Add a program")
         print("\t4. Install all programs")
+        print("\t5. Edit a program")
         print("\t9. Save changes")
         print("\t0. Quit")
         print("\n")
@@ -37,6 +38,7 @@ class TUI_Mngr:
             2: self.show_programs,
             3: self.add_program,
             4: self.install_programs,
+            5: self.edit_program,
             9: self.save_changes,
         }
 
@@ -58,6 +60,12 @@ class TUI_Mngr:
     def add_program(self):
         self.manager.add_program()
         self._STATE_CHANGE_ = True
+
+    def edit_program(self):
+        self.show_programs()
+        program_num = self.get_option("Enter the number of the program you would like to edit: ", "int") - 1
+        field = self.get_option("Enter the field which you would like to edit (1: Program Name 2: Download Link): ", "int")
+        self.manager.edit_program(program_num, field)
     
     def install_programs(self):
         self.manager.download_setups()
