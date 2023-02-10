@@ -1,5 +1,6 @@
 # Ignore all database files created for testing
 *.db
+*.txt
 
 # Ignore pycache
 __pycache__/
