@@ -33,6 +33,9 @@ class TUI_Mngr:
                 return self.get_option(prompt, type)
         return resp
     
+    def check_is_in_range(self, lower, upper, choice):
+        return (choice > lower and choice < upper)
+    
     def method_dict(self, choice: int):
         methods = {
             1: self.this_help,
@@ -70,11 +73,18 @@ class TUI_Mngr:
         program_num = self.get_option("Enter the number of the program you would like to edit: ", "int") - 1
         field = self.get_option("Enter the field which you would like to edit (1: Program Name 2: Download Link): ", "int")
 
-        if field == 1:
-            new_val = input("Please enter the new name for the program: ")
+        choice_good = False
+        while not choice_good:
+            if field == 1:
+                new_val = input("Please enter the new name for the program: ")
+                choice_good = True
 
-        else:
-            new_val = input("Please enter the new download link for the program: ")
+            elif field == 2:
+                new_val = input("Please enter the new download link for the program: ")
+                choice_good = True
+            
+            else:
+                print(f"Please enter either '1' or '2'.")
 
         self.manager.edit_program(program_num, field, new_val)
     
@@ -110,8 +120,11 @@ class TUI_Mngr:
         
         while not choice_made:
             prog_num = self.get_option("Enter the number of the program you would like to remove: ", "int") - 1
-
-            choice_made = "y" == input(f"Are you sure you want to delete {self.manager.program_list[prog_num].program_name}? (y/n) ")
+            if prog_num < 0 or prog_num > len(self.manager.program_list):
+                print(f"Please enter a number greater than zero and less than {len(self.manager.program_list)}")
+                continue
+            else:
+                choice_made = "y" == input(f"Are you sure you want to delete {self.manager.program_list[prog_num].program_name}? (y/n) ")
         
         self.manager.remove_program(prog_num)
     
