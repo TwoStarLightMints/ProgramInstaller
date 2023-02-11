@@ -1,6 +1,5 @@
 from program_manager import ProgramManager
-from os import system, listdir, chdir, getcwd
-from time import sleep
+from os import listdir, chdir, getcwd
 import subprocess as sp
 
 class TUI_Mngr:
@@ -17,6 +16,7 @@ class TUI_Mngr:
         print("\t3. Add a program")
         print("\t4. Install all programs")
         print("\t5. Edit a program")
+        print("\t6. Remove a program")
         print("\t9. Save changes")
         print("\t0. Quit")
         print("\n")
@@ -39,6 +39,7 @@ class TUI_Mngr:
             3: self.add_program,
             4: self.install_programs,
             5: self.edit_program,
+            6: self.remove_program,
             9: self.save_changes,
         }
 
@@ -65,7 +66,14 @@ class TUI_Mngr:
         self.show_programs()
         program_num = self.get_option("Enter the number of the program you would like to edit: ", "int") - 1
         field = self.get_option("Enter the field which you would like to edit (1: Program Name 2: Download Link): ", "int")
-        self.manager.edit_program(program_num, field)
+
+        if field == 1:
+            new_val = input("Please enter the new name for the program: ")
+
+        else:
+            new_val = input("Please enter the new download link for the program: ")
+
+        self.manager.edit_program(program_num, field, new_val)
     
     def install_programs(self):
         self.manager.download_setups()
@@ -91,6 +99,18 @@ class TUI_Mngr:
                 self._STATE_CHANGE_ = False
             else:
                 print("No changes to save")
+    
+    def remove_program(self):
+        self.show_programs()
+
+        choice_made = False
+        
+        while not choice_made:
+            prog_num = self.get_option("Enter the number of the program you would like to remove: ", "int") - 1
+
+            choice_made = "y" == input(f"Are you sure you want to delete {self.manager.program_list[prog_num].program_name}? (y/n) ")
+        
+        self.manager.remove_program(prog_num)
     
     def run(self):
         running = True
