@@ -75,10 +75,10 @@ class ProgramManager:
     def edit_program(self, program_num, field, new_val):
         sql_cur = self.db_con.cursor()
         if field == 1:
-            sql_cur.execute(f"UPDATE programs SET program_name = '{new_val}' WHERE program_name = '{self.program_list[program_num].program_name}'")
+            sql_cur.execute(f"UPDATE programs SET program_name = '{new_val}' WHERE id = '{program_num}'")
             self.program_list[program_num].program_name = new_val
         else:
-            sql_cur.execute(f"UPDATE programs SET download_link = '{new_val}' WHERE download_link = '{self.program_list[program_num].download_link}'")
+            sql_cur.execute(f"UPDATE programs SET download_link = '{new_val}' WHERE id = '{program_num}'")
             self.program_list[program_num].download_link = new_val
 
     def remove_program(self, program_num):
