@@ -8,7 +8,7 @@ class Program:
         self.temp_path: str = join(temp_dir, f"{program_name}_SETUP.exe")
     
     def __str__(self) -> str:
-        return f"{self.program_name}: {self.download_link}"
+        return f"{self.program_name}: {self.download_link[:60]}"
     
     def install(self) -> None:
         """
