@@ -8,7 +8,12 @@ class Program:
         self.temp_path: str = join(temp_dir, f"{program_name}_SETUP.exe")
     
     def __str__(self) -> str:
-        return f"{self.program_name}: {self.download_link[:60]}"
+        if len(self.download_link) > 60:
+            download_link = self.download_link[:60]
+            download_link = download_link + "..."
+        else:
+            download_link = self.download_link
+        return f"{self.program_name}: {download_link}"
     
     def install(self) -> None:
         """
