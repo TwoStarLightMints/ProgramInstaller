@@ -18,6 +18,7 @@ class TUI_Mngr:
         print("\t4. Install all programs")
         print("\t5. Edit a program")
         print("\t6. Remove a program")
+        print("\t7. Update the link information for all programs")
         print("\t9. Save changes")
         print("\t0. Quit")
         print("\n")
@@ -44,6 +45,7 @@ class TUI_Mngr:
             4: self.install_programs,
             5: self.edit_program,
             6: self.remove_program,
+            7: self.update_link_info,
             9: self.save_changes,
         }
 
@@ -87,6 +89,10 @@ class TUI_Mngr:
                 print(f"Please enter either '1' or '2'.")
 
         self.manager.edit_program(program_num, field, new_val)
+
+    def update_link_info(self):
+        if 'y' == input("This process can take a while to complete, continue? (y/n) "):
+            self.manager.update_link_info()
     
     def install_programs(self):
         self.manager.download_setups()
