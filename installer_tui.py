@@ -1,6 +1,7 @@
 from program_manager import ProgramManager
 from os import listdir, chdir, getcwd
-import subprocess as sp
+from subprocess import run as run_sb
+from os import system
 
 class TUI_Mngr:
     _STATE_CHANGE_ = False
@@ -54,9 +55,11 @@ class TUI_Mngr:
         print("\nTo run the script just use:")
         print("\n\t$ python main.py")
         print("\nMore to come.")
+        input("Continue...")
     
     def show_programs(self):
         self.manager.show_programs()
+        input("Continue...")
     
     def add_program(self):
         self.manager.add_program()
@@ -86,7 +89,7 @@ class TUI_Mngr:
             chdir(self.manager._temp_dir.name)
 
             for setup in listdir():
-                sp.run(setup)
+                run_sb(setup)
             
             chdir(cwd)
     
@@ -115,13 +118,17 @@ class TUI_Mngr:
     def run(self):
         running = True
 
+        system("cls")
+        
         while running:
             self.print_menu()
             choice = self.get_option("Enter your choice: ", "int")
             if choice == 0:
                 running = False
                 continue
+            system("cls")
             self.method_dict(choice)
+            system("cls")
         
         if self._STATE_CHANGE_:
             self.save_changes()
