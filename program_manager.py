@@ -24,7 +24,7 @@ class ProgramManager:
             sql_con = sqlite3.connect(db_file)
             sql_cur = sql_con.cursor()
             
-            sql_cur.execute("CREATE TABLE programs (program_name, download_link)")
+            sql_cur.execute("CREATE TABLE programs (id PRIMARY KEY, program_name, download_link)")
 
             return sql_con
     
@@ -37,7 +37,7 @@ class ProgramManager:
         res = sql_cur.execute("SELECT * FROM programs")
 
         for row in res.fetchall():
-            self.program_list.append(Program(row[1], row[0], self._temp_dir.name))
+            self.program_list.insert(int(row[0]), Program(row[2], row[1], self._temp_dir.name))
 
     def write_programs(self):
         """
@@ -45,12 +45,12 @@ class ProgramManager:
         """
         sql_cur = self.db_con.cursor()
         
-        for program in self.program_list:
+        for id, program in enumerate(self.program_list):
             res = sql_cur.execute(f"SELECT * FROM programs WHERE program_name='{program.program_name}'")
 
             if res.fetchone() == None:
                 print(f"Writing - {program}")
-                sql_cur.execute(f"INSERT INTO programs VALUES ('{program.program_name}', '{program.download_link}')")
+                sql_cur.execute(f"INSERT INTO programs VALUES ('{id}', '{program.program_name}', '{program.download_link}')")
             else:
                 continue
         
