@@ -1,10 +1,7 @@
 from tempfile import TemporaryDirectory
-from os import listdir
 from os.path import isfile
-import requests
 import sqlite3
 from program import Program
-from time import sleep
 
 # sqlite3 database structure
 #   Table: programs
@@ -75,18 +72,19 @@ class ProgramManager:
         link = input(f"Please enter the download link for {prog_name}: ")
         self.program_list.append(Program(link, prog_name, self._temp_dir.name))
 
-    def edit_program(self, program_num, field):
+    def edit_program(self, program_num, field, new_val):
         sql_cur = self.db_con.cursor()
         if field == 1:
-            new_name = input("Please enter the new name for the program: ")
-            sql_cur.execute(f"UPDATE programs SET program_name = '{new_name}' WHERE program_name = '{self.program_list[program_num].program_name}'")
-
-            self.program_list[program_num].program_name = new_name
+            sql_cur.execute(f"UPDATE programs SET program_name = '{new_val}' WHERE program_name = '{self.program_list[program_num].program_name}'")
+            self.program_list[program_num].program_name = new_val
         else:
-            new_link = input("Please enter the new download link for the program: ")
-            self.program_list[program_num].download_link = new_link
-            sql_cur.execute(f"UPDATE programs SET download_link = '{new_link}' WHERE download_link = '{self.program_list[program_num].download_link}'")
+            sql_cur.execute(f"UPDATE programs SET download_link = '{new_val}' WHERE download_link = '{self.program_list[program_num].download_link}'")
+            self.program_list[program_num].download_link = new_val
 
+    def remove_program(self, program_num):
+        sql_cur = self.db_con.cursor()
+        sql_cur.execute(f"DELETE FROM programs WHERE program_name = '{self.program_list[program_num].program_name}'")
+        self.program_list.remove(self.program_list[program_num])
     
     def download_setups(self):
         """
