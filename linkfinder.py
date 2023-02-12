@@ -68,4 +68,4 @@ class LinkFinder:
         resp = requests.get(link)
         html = resp.content
 
-        links = re.findall('href=.*"')
+        links = re.findall('(https|http):\/\/[a-zA-Z0-9_]*?\.[a-zA-Z0-9_]*[^"]*', html) # This funky dude selects any valid link within a website because of regex magic and the fact that no matter where the link is we will hope and pray to god that the link will end with a double quote
