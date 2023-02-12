@@ -49,10 +49,13 @@ class ProgramManager:
         for id, program in enumerate(self.program_list):
             res = sql_cur.execute(f"SELECT * FROM programs WHERE id = '{id}'")
 
-            if res.fetchone() == None:
+            caught = res.fetchone()
+
+            if caught == None:
                 print(f"Writing - {program}")
                 sql_cur.execute(f"INSERT INTO programs VALUES ('{id}', '{program.program_name}', '{program.download_link}')")
-            elif res.fetchone() != None:
+            elif caught != None:
+                print(f"Updating {program.program_name}")
                 sql_cur.execute(f"UPDATE programs SET program_name = '{program.program_name}', download_link = '{program.download_link}' WHERE id = '{id}'")
         
         self.db_con.commit()
