@@ -8,7 +8,12 @@ class LinkFinder:
         self._raw_link = link
         self.versioned = self._is_versioned(link)
 
-        if self.versioned:
+        if "github" in urlparse(self._raw_link).netloc:
+            url_path = urlparse(self._raw_link).path
+            path_split = url_path.split("/")
+            print(path_split)
+        
+        elif self.versioned:
             print("Link is not clean, cleaning to commence\nThis process can take a few seconds...")
             self.unversioned_link = self._recur_handle_versioned(self._raw_link)
             
