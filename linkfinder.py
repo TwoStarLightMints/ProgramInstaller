@@ -1,4 +1,7 @@
 import re
+import requests
+from urllib.parse import urlparse, urlunparse
+from difflib import SequenceMatcher
 
 class LinkFinder:
     def _is_versioned (self, link: str) -> bool:
@@ -27,3 +30,16 @@ class LinkFinder:
             
             else:
                 return shortened_link
+
+    def _remove_special_netloc_info (self, link: str) -> str:
+        parsed = urlparse(link)
+        return urlunparse(parsed._replace(netloc=parsed.netloc[parsed.netloc.find(".") + 1: len(parsed.netloc)]))
+    
+    def _handle_404 (self, link: str) -> str:
+        status = requests.get(link).status_code
+
+        if status == 404:
+            last_forward_index = link.rfind("/")
+
+            return self._handle_404(link[: last_forward_index])
+        return link
