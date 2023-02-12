@@ -11,8 +11,8 @@ class Program:
     
     def __str__(self) -> str:
         if len(self.download_link) > 60:
-            download_link = self.download_link[:60]
-            download_link = download_link + "..."
+            download_link = self.download_link
+            download_link = download_link
         else:
             download_link = self.download_link
         return f"{self.program_name}: {download_link}"
@@ -59,13 +59,14 @@ class Program:
             req = requests.get(self.download_link)
         except (requests.exceptions.MissingSchema, requests.exceptions.InvalidURL):
             print("Bad URL provided, check the url provided.")
-
         
         if not req.ok:
             print(f"Install attempt resulted in bad status code: {req.status_code}")
+            print(self.program_name)
             return
         
         print("Request successful, now downloading installer...")
+        print(self.program_name)
         with open(self.temp_path, "wb") as file:
             file.write(req.content)
 
