@@ -75,6 +75,7 @@ class TUI_Mngr:
 
     def edit_program(self):
         self.manager.show_programs()
+        print("")
         program_num = self.get_option("Enter the number of the program you would like to edit: ", "int") - 1
         field = self.get_option("Enter the field which you would like to edit (1: Program Name 2: Download Link): ", "int")
 
@@ -123,6 +124,7 @@ class TUI_Mngr:
     
     def remove_program(self):
         self.manager.show_programs()
+        print("")
 
         choice_made = False
         
