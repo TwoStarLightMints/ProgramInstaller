@@ -9,9 +9,10 @@ class LinkFinder:
         self.versioned = self._is_versioned(link)
 
         if "github" in urlparse(self._raw_link).netloc:
-            url_path = urlparse(self._raw_link).path
-            path_split = url_path.split("/")
-            print(path_split)
+            url_path = urlparse(self._raw_link).path.split("/")
+            
+            input("Link points to a github repo, the returned link will point to all future releases, please do not change it. Press enter to continue...")
+            self.clean_link = f"https://api.github.com/repos/{url_path[1]}/{url_path[2]}/releases/latest"
         
         elif self.versioned:
             print("Link is not clean, cleaning to commence\nThis process can take a few seconds...")
@@ -103,5 +104,5 @@ class LinkFinder:
             return self.find_link_from_unversioned(promising_links[0])
 
 if __name__ == "__main__":
-    finder = LinkFinder("https://macroplant.com/adapter/download/pc/complete/2.1.2")
+    finder = LinkFinder("https://github.com/FireFox2000000/Moonscraper-Chart-Editor/releases")
     print(finder.clean_link)
