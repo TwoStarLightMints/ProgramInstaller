@@ -5,7 +5,7 @@ from difflib import SequenceMatcher
 
 class LinkFinder:
     def __init__(self, link: str):
-        self._raw_link
+        self._raw_link = link
         self.versioned = self._is_versioned(link)
 
         if self.versioned:
@@ -64,8 +64,39 @@ class LinkFinder:
             return self._handle_404(link[: last_forward_index])
         return link
 
+    def check_is_url (self, link) -> bool:
+        parsed_link = urlparse(link)
+        return ((parsed_link.scheme != "" and (parsed_link.scheme == "https" or parsed_link.scheme == "http")) and parsed_link.netloc != "" and parsed_link.path != "")
+
     def find_link_from_unversioned(self, link: str):
         resp = requests.get(link)
-        html = resp.content
+        html = resp.content.decode()
 
-        links = re.findall('(https|http):\/\/[a-zA-Z0-9_]*?\.[a-zA-Z0-9_]*[^"]*', html) # This funky dude selects any valid link within a website because of regex magic and the fact that no matter where the link is we will hope and pray to god that the link will end with a double quote
+        links: list = re.findall('(?:https|http):\/\/[a-zA-Z0-9_]*?\.[a-zA-Z0-9_]*[^ "*<]*', html) # This funky dude selects any valid link within a website because of regex magic and the fact that no matter where the link is we will hope and pray to god that the link will end with a double quote
+
+        partial_links: list[tuple[str]] = re.findall('(href=")([^ <]*)(")', html)
+        for partial_link in partial_links:
+            if not partial_link[1].startswith("http") and self.check_is_url(link + partial_link[1]):
+                links.append(link + partial_link[1])
+        
+        promising_links = list()
+
+        for link in links:
+            # Found the goal, return early here
+            if re.search("\.exe|installer", link, re.IGNORECASE):
+                return link
+            # Bruh, just keep going, this one is more likely the goal
+            elif re.search("download", link):
+                promising_links.append(link)
+            # Just keep going, maybe the next round will work
+            else:
+                continue
+        
+        print(promising_links)
+
+        if len(promising_links) != 0:
+            return self.find_link_from_unversioned(promising_links[0])
+
+if __name__ == "__main__":
+    finder = LinkFinder("https://macroplant.com/adapter/download/pc/complete/2.1.2")
+    print(finder.clean_link)
