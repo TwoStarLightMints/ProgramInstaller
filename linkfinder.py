@@ -12,7 +12,10 @@ class LinkFinder:
             print("Link is not clean, cleaning to commence\nThis process can take a few seconds...")
             self.unversioned_link = self._recur_handle_versioned(self._raw_link)
             
-            if len(self.find_all_case_sensitive(urlparse(self.unversioned_link).netloc, ".")) > 1:
+            # Remove the information that appears after http/https but before domain name
+            # https://netloc.domain.com/something_else
+            #          /\ This here
+            if len(re.findall("\.", urlparse(self.unversioned_link).netloc)) > 1:
                 self.unversioned_link = self._handle_404(self._remove_special_netloc_info(self.unversioned_link))
             self.clean_link = self.find_link_from_unversioned(self.unversioned_link)
             print("Link has been cleaned, processing will continue")
@@ -61,5 +64,8 @@ class LinkFinder:
             return self._handle_404(link[: last_forward_index])
         return link
 
-    def _find_anchor_elements(self, link: str):
-        pass
+    def find_link_from_unversioned(self, link: str):
+        resp = requests.get(link)
+        html = resp.content
+
+        links = re.findall('href=.*"')
