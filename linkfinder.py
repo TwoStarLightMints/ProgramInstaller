@@ -83,7 +83,9 @@ class LinkFinder:
         partial_links: list[tuple[str]] = re.findall('(href=")([^ <]*)(")', html)
         for partial_link in partial_links:
             if not partial_link[1].startswith("http") and self.check_is_url(link + partial_link[1]):
-                links.append(link + partial_link[1])
+                parsed = urlparse(link)
+                newly_formed = parsed.scheme + "://" + parsed.netloc + partial_link[1]
+                links.append(newly_formed)
         
         promising_links = list()
 
@@ -104,5 +106,5 @@ class LinkFinder:
             return self.find_link_from_unversioned(promising_links[0])
 
 if __name__ == "__main__":
-    finder = LinkFinder("https://github.com/FireFox2000000/Moonscraper-Chart-Editor/releases")
+    finder = LinkFinder("https://github.com/audacity/audacity/releases/download/Audacity-3.2.4/audacity-win-3.2.4-x64.exe")
     print(finder.clean_link)
