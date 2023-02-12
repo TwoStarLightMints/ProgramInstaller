@@ -2,6 +2,7 @@ from tempfile import TemporaryDirectory
 from os.path import isfile
 import sqlite3
 from program import Program
+from linkfinder import LinkFinder
 
 # sqlite3 database structure
 #   Table: programs
@@ -85,6 +86,16 @@ class ProgramManager:
         sql_cur = self.db_con.cursor()
         sql_cur.execute(f"DELETE FROM programs WHERE program_name = '{self.program_list[program_num].program_name}'")
         self.program_list.remove(self.program_list[program_num])
+
+    def update_link_info(self):
+        for id, program in enumerate(self.program_list):
+            print(f"Now cleaning {program.program_name}")
+            cleaner = LinkFinder(program.download_link)
+            new_link = cleaner.clean_link
+            print(f"New link for {program.program_name} is {new_link[:60]}")
+            program.download_link = new_link
+            sql_cur = self.db_con.cursor()
+            sql_cur.execute(f"UPDATE programs SET download_link = '{new_link}' WHERE id = '{id}'")
     
     def download_setups(self):
         """
