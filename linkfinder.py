@@ -14,3 +14,16 @@ class LinkFinder:
             return True
         
         return False
+
+    def _recur_handle_versioned (self, link: str) -> str:
+        last_forward_index = link.rfind("/")
+
+        if last_forward_index != -1:
+            shortened_link = link[:last_forward_index]
+            r = requests.get(shortened_link)
+
+            if r.status_code == 404:
+                return self._recur_handle_versioned(shortened_link)
+            
+            else:
+                return shortened_link
