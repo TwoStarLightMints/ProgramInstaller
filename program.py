@@ -44,7 +44,7 @@ class Program:
             else:
                 url_path = urlparse(self.download_link).path.split("/")
 
-                repo_assets = requests.get(f"https://api.github.com/repos/{url_path[1]}/{url_path[2]}/releases/latest")
+                repo_assets = requests.get(f"https://api.github.com/repos/{url_path[1]}/{url_path[2]}/releases/latest").json()["assets"]
 
                 for asset in repo_assets:
                     if ".exe" in asset["name"]:
