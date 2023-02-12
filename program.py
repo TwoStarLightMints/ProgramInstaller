@@ -40,6 +40,20 @@ class Program:
                 
                 with open(self.temp_path, "wb") as file:
                     file.write(requests.get(backup["browser_download_url"]).content)
+            
+            else:
+                url_path = urlparse(self.download_link).path.split("/")
+
+                repo_assets = requests.get(f"https://api.github.com/repos/{url_path[1]}/{url_path[2]}/releases/latest")
+
+                for asset in repo_assets:
+                    if ".exe" in asset["name"]:
+                        with open(self.temp_path, "wb") as file:
+                            file.write(requests.get(asset["browser_download_url"]).content)
+                        return
+                    
+                    elif "installer" in asset["name"].lower():
+                        backup = asset
 
         try:
             req = requests.get(self.download_link)
