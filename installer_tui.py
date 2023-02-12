@@ -22,6 +22,9 @@ class TUI_Mngr:
         print("\t9. Save changes")
         print("\t0. Quit")
         print("\n")
+
+    def continue_q_mark(self):
+        input("Please enter to continue...")
     
     def get_option(self, prompt: str, type: str):
         resp = input(prompt)
@@ -60,11 +63,11 @@ class TUI_Mngr:
         print("\nTo run the script just use:")
         print("\n\t$ python main.py")
         print("\nMore to come.")
-        input("Continue...")
+        self.continue_q_mark()
     
     def show_programs(self):
         self.manager.show_programs()
-        input("Continue...")
+        self.continue_q_mark()
     
     def add_program(self):
         self.manager.add_program()
@@ -107,7 +110,7 @@ class TUI_Mngr:
 
                 except OSError:
                     print(f"Something went wrong installing {program.program_name}, try using a different download link.\nIf you can find a link that has any kind of version information or has the display text: 'Download should start in a few seconds, -if not click here-'.")
-                input("Press enter to continue...")
+                self.continue_q_mark()
     
     def save_changes(self):
         if "y" == input("Save changes? (y/n) "):
@@ -116,7 +119,7 @@ class TUI_Mngr:
                 self._state_change = False
             else:
                 print("No changes to save")
-                input("Press enter to continue...")
+                self.continue_q_mark()
     
     def remove_program(self):
         self.show_programs()
