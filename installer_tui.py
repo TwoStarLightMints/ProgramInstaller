@@ -74,7 +74,7 @@ class TUI_Mngr:
         self._state_change = True
 
     def edit_program(self):
-        self.show_programs()
+        self.manager.show_programs()
         program_num = self.get_option("Enter the number of the program you would like to edit: ", "int") - 1
         field = self.get_option("Enter the field which you would like to edit (1: Program Name 2: Download Link): ", "int")
 
@@ -122,7 +122,7 @@ class TUI_Mngr:
                 self.continue_q_mark()
     
     def remove_program(self):
-        self.show_programs()
+        self.manager.show_programs()
 
         choice_made = False
         
