@@ -4,8 +4,8 @@ from subprocess import run as run_sb
 from os import system
 
 class TUI_Mngr:
-    _STATE_CHANGE_ = False
     def __init__(self) -> None:
+        self._state_change = False
         self.manager = ProgramManager()
         self.run()
 
@@ -68,7 +68,7 @@ class TUI_Mngr:
     
     def add_program(self):
         self.manager.add_program()
-        self._STATE_CHANGE_ = True
+        self._state_change = True
 
     def edit_program(self):
         self.show_programs()
@@ -92,9 +92,8 @@ class TUI_Mngr:
 
     def update_link_info(self):
         if 'y' == input("This process can take a while to complete, continue? (y/n) "):
+            self._state_change = True
             self.manager.update_link_info()
-
-            self._STATE_CHANGE_ = True
     
     def install_programs(self):
         self.manager.download_setups()
@@ -102,17 +101,22 @@ class TUI_Mngr:
         if "y" == input("Continue with install? (y/n) "):
             for program in self.manager.program_list:
                 print(program.temp_path)
-                run_sb(program.temp_path)
+
+                try:
+                    run_sb(program.temp_path)
+
+                except OSError:
+                    print(f"Something went wrong installing {program.program_name}, try using a different download link.\nIf you can find a link that has any kind of version information or has the display text: 'Download should start in a few seconds, -if not click here-'.")
+                input("Press enter to continue...")
     
     def save_changes(self):
-        q = input("Save changes? (y/n) ")
-
-        if q == "y":
-            if self._STATE_CHANGE_:
+        if "y" == input("Save changes? (y/n) "):
+            if self._state_change:
                 self.manager.write_programs()
-                self._STATE_CHANGE_ = False
+                self._state_change = False
             else:
                 print("No changes to save")
+                input("Press enter to continue...")
     
     def remove_program(self):
         self.show_programs()
@@ -144,7 +148,7 @@ class TUI_Mngr:
             self.method_dict(choice)
             system("cls")
         
-        if self._STATE_CHANGE_:
+        if self._state_change:
             self.save_changes()
 
         print("Cleaning up...")
