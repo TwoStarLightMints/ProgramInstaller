@@ -93,21 +93,16 @@ class TUI_Mngr:
     def update_link_info(self):
         if 'y' == input("This process can take a while to complete, continue? (y/n) "):
             self.manager.update_link_info()
+
+            self._STATE_CHANGE_ = True
     
     def install_programs(self):
         self.manager.download_setups()
 
-        cwd = getcwd()
-
-        q = input("Continue with install? (y/n) ")
-
-        if q == "y":
-            chdir(self.manager._temp_dir.name)
-
-            for setup in listdir():
-                run_sb(setup)
-            
-            chdir(cwd)
+        if "y" == input("Continue with install? (y/n) "):
+            for program in self.manager.program_list:
+                print(program.temp_path)
+                run_sb(program.temp_path)
     
     def save_changes(self):
         q = input("Save changes? (y/n) ")
