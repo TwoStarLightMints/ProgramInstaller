@@ -4,6 +4,7 @@ from urllib.parse import urlparse, urlunparse
 from difflib import SequenceMatcher
 
 class LinkFinder:
+    def __init__(self, link: str):
     def _is_versioned (self, link: str) -> bool:
         path = urlparse(link).path
         coincidence = 0
@@ -43,3 +44,6 @@ class LinkFinder:
 
             return self._handle_404(link[: last_forward_index])
         return link
+
+    def _find_anchor_elements(self, link: str):
+        pass
