@@ -5,6 +5,22 @@ from difflib import SequenceMatcher
 
 class LinkFinder:
     def __init__(self, link: str):
+        self._raw_link
+        self.versioned = self._is_versioned(link)
+
+        if self.versioned:
+            print("Link is not clean, cleaning to commence\nThis process can take a few seconds...")
+            self.unversioned_link = self._recur_handle_versioned(self._raw_link)
+            
+            if len(self.find_all_case_sensitive(urlparse(self.unversioned_link).netloc, ".")) > 1:
+                self.unversioned_link = self._handle_404(self._remove_special_netloc_info(self.unversioned_link))
+            self.clean_link = self.find_link_from_unversioned(self.unversioned_link)
+            print("Link has been cleaned, processing will continue")
+        
+        else:
+            print("Link is clean, processing will continue")
+            self.clean_link = self._raw_link
+
     def _is_versioned (self, link: str) -> bool:
         path = urlparse(link).path
         coincidence = 0
