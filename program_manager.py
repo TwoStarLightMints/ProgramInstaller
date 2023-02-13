@@ -90,10 +90,14 @@ class ProgramManager:
     def update_link_info(self):
         for program in self.program_list:
             print(f"Now cleaning {program.program_name}, current link is {program.download_link}")
+            old_link = program.download_link
             cleaner = LinkFinder(program.download_link)
             new_link = cleaner.clean_link
             print(f"New link for {program.program_name} is {new_link}")
             program.download_link = new_link
+            
+            if old_link != new_link:
+                print(f"Consider updating your current version of {program.program_name}, the link was out of date")
     
     def download_setups(self):
         """
