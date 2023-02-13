@@ -3,6 +3,7 @@ from os.path import isfile
 import sqlite3
 from program import Program
 from linkfinder import LinkFinder
+from time import sleep
 
 # sqlite3 database structure
 #   Table: programs
@@ -75,7 +76,6 @@ class ProgramManager:
         self.program_list.append(Program(link, prog_name, self._temp_dir.name))
 
     def edit_program(self, program_num, field, new_val):
-        sql_cur = self.db_con.cursor()
         if field == 1:
             self.program_list[program_num].program_name = new_val
         else:
