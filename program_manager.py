@@ -66,8 +66,8 @@ class ProgramManager:
         Prints out all the programs in the program list using their to string method.
         """
         print("(Program Name): (Program Download Link)")
-        for program in self.program_list:
-            print(program)
+        for num, program in enumerate(self.program_list):
+            print(f"{num + 1}. {program}")
         
     def add_program(self, prog_name, link):
         """
