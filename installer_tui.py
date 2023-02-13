@@ -79,7 +79,8 @@ class TUI_Mngr:
 
         print("")
         print(f"{prog_name} has now been added to the program list")
-        sleep(2)
+        sleep(1)
+        self.continue_q_mark()
 
     def edit_program(self):
         self.manager.show_programs()
@@ -108,7 +109,8 @@ class TUI_Mngr:
             print(f"The program's name has been successfully changed to {new_val}")
         else:
             print(f"{self.manager.program_list[program_num].program_name}'s download link has successfully been changed to {new_val}")
-        sleep(2)
+        sleep(1)
+        self.continue_q_mark()
 
     def update_link_info(self):
         if 'y' == input("This process can take a while to complete, continue? (y/n) "):
@@ -117,7 +119,8 @@ class TUI_Mngr:
 
             print("")
             print("All links successfully updated")
-            sleep(2)
+            sleep(1)
+            self.continue_q_mark()
     
     def install_programs(self):
         self.manager.download_setups()
@@ -135,7 +138,8 @@ class TUI_Mngr:
 
             print("")
             print("All programs successfully installed")
-            sleep(2)
+            sleep(1)
+            self.continue_q_mark()
     
     def save_changes(self):
         if "y" == input("Save changes? (y/n) "):
@@ -144,11 +148,13 @@ class TUI_Mngr:
                 self._state_change = False
                 print("")
                 print("All changes saved")
-                sleep(2)
+                sleep(1)
+                self.continue_q_mark()
             else:
                 print("")
                 print("No changes to save")
-                sleep(2)
+                sleep(1)
+                self.continue_q_mark()
     
     def remove_program(self):
         self.manager.show_programs()
@@ -169,7 +175,8 @@ class TUI_Mngr:
         self.manager.remove_program(prog_num)
         print("")
         print(f"{chosen_one} has been successfully removed")
-        sleep(2)
+        sleep(1)
+        self.continue_q_mark()
     
     def run(self):
         running = True
