@@ -154,7 +154,6 @@ class TUI_Mngr:
                 print("")
                 print("No changes to save")
                 sleep(1)
-                self.continue_q_mark()
     
     def remove_program(self):
         self.manager.show_programs()
