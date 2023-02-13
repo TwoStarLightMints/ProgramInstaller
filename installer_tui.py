@@ -77,7 +77,7 @@ class TUI_Mngr:
         self.manager.add_program(prog_name, link)
         self._state_change = True
         print(f"{prog_name} has now been added to the program list")
-        sleep(3)
+        sleep(2)
 
     def edit_program(self):
         self.manager.show_programs()
@@ -104,14 +104,14 @@ class TUI_Mngr:
             print(f"The program's name has been successfully changed to {new_val}")
         else:
             print(f"{self.manager.program_list[program_num].program_name}'s download link has successfully been changed to {new_val}")
-        sleep(3)
+        sleep(2)
 
     def update_link_info(self):
         if 'y' == input("This process can take a while to complete, continue? (y/n) "):
             self._state_change = True
             self.manager.update_link_info()
             print("All links successfully updated")
-            sleep(3)
+            sleep(2)
     
     def install_programs(self):
         self.manager.download_setups()
@@ -127,7 +127,7 @@ class TUI_Mngr:
                     print(f"Something went wrong installing {program.program_name}, try using a different download link.\nIf you can find a link that has any kind of version information or has the display text: 'Download should start in a few seconds, -if not click here-'.")
                 self.continue_q_mark()
             print("All programs successfully installed")
-            sleep(3)
+            sleep(2)
     
     def save_changes(self):
         if "y" == input("Save changes? (y/n) "):
@@ -135,10 +135,10 @@ class TUI_Mngr:
                 self.manager.write_programs()
                 self._state_change = False
                 print("All changes saved")
-                sleep(3)
+                sleep(2)
             else:
                 print("No changes to save")
-                sleep(3)
+                sleep(2)
     
     def remove_program(self):
         self.manager.show_programs()
@@ -158,7 +158,7 @@ class TUI_Mngr:
         
         self.manager.remove_program(prog_num)
         print(f"{chosen_one} has been successfully removed")
-        sleep(3)
+        sleep(2)
     
     def run(self):
         running = True
