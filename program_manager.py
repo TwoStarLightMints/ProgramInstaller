@@ -68,21 +68,17 @@ class ProgramManager:
         for program in self.program_list:
             print(program)
         
-    def add_program(self):
+    def add_program(self, prog_name, link):
         """
         Exposes functionality to add a program to the list of programs.
         """
-        prog_name = input("Please input a name for the program: ")
-        link = input(f"Please enter the download link for {prog_name}: ")
         self.program_list.append(Program(link, prog_name, self._temp_dir.name))
 
     def edit_program(self, program_num, field, new_val):
         sql_cur = self.db_con.cursor()
         if field == 1:
-            sql_cur.execute(f"UPDATE programs SET program_name = '{new_val}' WHERE id = '{program_num}'")
             self.program_list[program_num].program_name = new_val
         else:
-            sql_cur.execute(f"UPDATE programs SET download_link = '{new_val}' WHERE id = '{program_num}'")
             self.program_list[program_num].download_link = new_val
 
     def remove_program(self, program_num):
