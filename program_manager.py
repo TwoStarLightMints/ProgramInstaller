@@ -98,6 +98,7 @@ class ProgramManager:
             
             if old_link != new_link:
                 print(f"Consider updating your current version of {program.program_name}, the link was out of date")
+            print("")
     
     def download_setups(self):
         """
