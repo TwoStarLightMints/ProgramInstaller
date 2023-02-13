@@ -15,7 +15,6 @@ class LinkFinder:
             self.clean_link = f"https://api.github.com/repos/{url_path[1]}/{url_path[2]}/releases/latest"
         
         elif self.versioned:
-            print("Link is not clean, cleaning to commence\nThis process can take a few seconds...")
             self.unversioned_link = self._recur_handle_versioned(self._raw_link)
             
             # Remove the information that appears after http/https but before domain name
