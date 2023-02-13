@@ -87,7 +87,7 @@ class ProgramManager:
         self.program_list.remove(self.program_list[program_num])
 
     def update_link_info(self):
-        for id, program in enumerate(self.program_list):
+        for program in self.program_list:
             print(f"Now cleaning {program.program_name}")
             cleaner = LinkFinder(program.download_link)
             new_link = cleaner.clean_link
