@@ -89,10 +89,10 @@ class ProgramManager:
 
     def update_link_info(self):
         for program in self.program_list:
-            print(f"Now cleaning {program.program_name}")
+            print(f"Now cleaning {program.program_name}, current link is {program.download_link}")
             cleaner = LinkFinder(program.download_link)
             new_link = cleaner.clean_link
-            print(f"New link for {program.program_name} is {new_link[:60]}")
+            print(f"New link for {program.program_name} is {new_link}")
             program.download_link = new_link
     
     def download_setups(self):
