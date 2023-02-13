@@ -1,7 +1,7 @@
 from program_manager import ProgramManager
-from os import listdir, chdir, getcwd
 from subprocess import run as run_sb
 from os import system
+from time import sleep
 
 class TUI_Mngr:
     def __init__(self) -> None:
@@ -70,8 +70,13 @@ class TUI_Mngr:
         self.continue_q_mark()
     
     def add_program(self):
-        self.manager.add_program()
+        prog_name = input("Please input a name for the program: ")
+        link = input(f"Please enter the download link for {prog_name}: ")
+
+        self.manager.add_program(prog_name, link)
         self._state_change = True
+        print(f"{prog_name} has now been added to the program list")
+        sleep(3)
 
     def edit_program(self):
         self.manager.show_programs()
@@ -94,10 +99,18 @@ class TUI_Mngr:
 
         self.manager.edit_program(program_num, field, new_val)
 
+        if field == 1:
+            print(f"The program's name has been successfully changed to {new_val}")
+        else:
+            print(f"{self.manager.program_list[program_num].program_name}'s download link has successfully been changed to {new_val}")
+        sleep(3)
+
     def update_link_info(self):
         if 'y' == input("This process can take a while to complete, continue? (y/n) "):
             self._state_change = True
             self.manager.update_link_info()
+            print("All links successfully updated")
+            sleep(3)
     
     def install_programs(self):
         self.manager.download_setups()
@@ -112,15 +125,19 @@ class TUI_Mngr:
                 except OSError:
                     print(f"Something went wrong installing {program.program_name}, try using a different download link.\nIf you can find a link that has any kind of version information or has the display text: 'Download should start in a few seconds, -if not click here-'.")
                 self.continue_q_mark()
+            print("All programs successfully installed")
+            sleep(3)
     
     def save_changes(self):
         if "y" == input("Save changes? (y/n) "):
             if self._state_change:
                 self.manager.write_programs()
                 self._state_change = False
+                print("All changes saved")
+                sleep(3)
             else:
                 print("No changes to save")
-                self.continue_q_mark()
+                sleep(3)
     
     def remove_program(self):
         self.manager.show_programs()
@@ -135,8 +152,12 @@ class TUI_Mngr:
                 continue
             else:
                 choice_made = "y" == input(f"Are you sure you want to delete {self.manager.program_list[prog_num].program_name}? (y/n) ")
+                if choice_made:
+                    chosen_one = self.manager.program_list[prog_num].program_name
         
         self.manager.remove_program(prog_num)
+        print(f"{chosen_one} has been successfully removed")
+        sleep(3)
     
     def run(self):
         running = True
