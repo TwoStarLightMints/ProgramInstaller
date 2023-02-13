@@ -67,6 +67,7 @@ class TUI_Mngr:
     
     def show_programs(self):
         self.manager.show_programs()
+        print("")
         self.continue_q_mark()
     
     def add_program(self):
