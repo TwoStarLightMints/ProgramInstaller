@@ -97,8 +97,6 @@ class ProgramManager:
             new_link = cleaner.clean_link
             print(f"New link for {program.program_name} is {new_link[:60]}")
             program.download_link = new_link
-            sql_cur = self.db_con.cursor()
-            sql_cur.execute(f"UPDATE programs SET download_link = '{new_link}' WHERE id = '{id}'")
     
     def download_setups(self):
         """
