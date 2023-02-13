@@ -99,8 +99,6 @@ class LinkFinder:
             # Just keep going, maybe the next round will work
             else:
                 continue
-        
-        print(promising_links)
 
         if len(promising_links) != 0:
             return self.find_link_from_unversioned(promising_links[0])
