@@ -76,6 +76,8 @@ class TUI_Mngr:
 
         self.manager.add_program(prog_name, link)
         self._state_change = True
+
+        print("")
         print(f"{prog_name} has now been added to the program list")
         sleep(2)
 
@@ -100,6 +102,8 @@ class TUI_Mngr:
 
         self.manager.edit_program(program_num, field, new_val)
 
+        print("")
+
         if field == 1:
             print(f"The program's name has been successfully changed to {new_val}")
         else:
@@ -110,6 +114,8 @@ class TUI_Mngr:
         if 'y' == input("This process can take a while to complete, continue? (y/n) "):
             self._state_change = True
             self.manager.update_link_info()
+
+            print("")
             print("All links successfully updated")
             sleep(2)
     
@@ -126,6 +132,8 @@ class TUI_Mngr:
                 except OSError:
                     print(f"Something went wrong installing {program.program_name}, try using a different download link.\nIf you can find a link that has any kind of version information or has the display text: 'Download should start in a few seconds, -if not click here-'.")
                 self.continue_q_mark()
+
+            print("")
             print("All programs successfully installed")
             sleep(2)
     
@@ -134,9 +142,11 @@ class TUI_Mngr:
             if self._state_change:
                 self.manager.write_programs()
                 self._state_change = False
+                print("")
                 print("All changes saved")
                 sleep(2)
             else:
+                print("")
                 print("No changes to save")
                 sleep(2)
     
@@ -157,6 +167,7 @@ class TUI_Mngr:
                     chosen_one = self.manager.program_list[prog_num].program_name
         
         self.manager.remove_program(prog_num)
+        print("")
         print(f"{chosen_one} has been successfully removed")
         sleep(2)
     
