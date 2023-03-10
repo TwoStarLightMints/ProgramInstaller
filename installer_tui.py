@@ -9,6 +9,9 @@ class TUI_Mngr:
         self.manager = ProgramManager()
         self.run()
 
+    def load_config(self):
+        pass    
+        
     def print_menu(self):
         print("-- PROGRAM INSTALLER --")
         print("\nMain Menu\n")
@@ -134,9 +137,12 @@ class TUI_Mngr:
                 print(f"Please enter a number greater than zero and less than {len(self.manager.program_list)}")
                 continue
             else:
-                choice_made = "y" == input(f"Are you sure you want to delete {self.manager.program_list[prog_num].program_name}? (y/n) ")
-        
-        self.manager.remove_program(prog_num)
+                choice_made = True
+                choice = input(f"Are you sure you want to delete {self.manager.program_list[prog_num].program_name}? (y/n) ")
+
+        if choice == 'y':
+            self.manager.remove_program(prog_num)
+            self._state_change = True
     
     def run(self):
         running = True
