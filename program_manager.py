@@ -6,6 +6,7 @@ from os.path import isfile
 import sqlite3
 from program import Program
 from linkfinder import LinkFinder
+from time import sleep
 
 # sqlite3 database structure
 #   Table: programs
@@ -74,21 +75,16 @@ class ProgramManager:
             print(program.download_link)
             print("+")
         
-    def add_program(self):
+    def add_program(self, prog_name, link):
         """
         Exposes functionality to add a program to the list of programs.
         """
-        prog_name = input("Please input a name for the program: ")
-        link = input(f"Please enter the download link for {prog_name}: ")
         self.program_list.append(Program(link, prog_name, self._temp_dir.name))
 
     def edit_program(self, program_num, field, new_val):
-        sql_cur = self.db_con.cursor()
         if field == 1:
-            sql_cur.execute(f"UPDATE programs SET program_name = '{new_val}' WHERE id = '{program_num}'")
             self.program_list[program_num].program_name = new_val
         else:
-            sql_cur.execute(f"UPDATE programs SET download_link = '{new_val}' WHERE id = '{program_num}'")
             self.program_list[program_num].download_link = new_val
 
     def remove_program(self, program_num):
@@ -97,14 +93,17 @@ class ProgramManager:
         self.program_list.remove(self.program_list[program_num])
 
     def update_link_info(self):
-        for id, program in enumerate(self.program_list):
-            print(f"Now cleaning {program.program_name}")
+        for program in self.program_list:
+            print(f"Now cleaning {program.program_name}, current link is {program.download_link}")
+            old_link = program.download_link
             cleaner = LinkFinder(program.download_link)
             new_link = cleaner.clean_link
-            print(f"New link for {program.program_name} is {new_link[:60]}")
+            print(f"New link for {program.program_name} is {new_link}")
             program.download_link = new_link
-            sql_cur = self.db_con.cursor()
-            sql_cur.execute(f"UPDATE programs SET download_link = '{new_link}' WHERE id = '{id}'")
+            
+            if old_link != new_link:
+                print(f"Consider updating your current version of {program.program_name}, the link was out of date")
+            print("")
     
     def download_setups(self):
         """

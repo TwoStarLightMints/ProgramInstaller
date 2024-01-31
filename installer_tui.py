@@ -1,8 +1,8 @@
 import os
 from program_manager import ProgramManager
-from os import listdir, chdir, getcwd
 from subprocess import run as run_sb
 from os import system
+from time import sleep
 
 class TUI_Mngr:
     def __init__(self) -> None:
@@ -76,11 +76,20 @@ class TUI_Mngr:
     
     def show_programs(self):
         self.manager.show_programs()
+        print("")
         self.continue_q_mark()
     
     def add_program(self):
-        self.manager.add_program()
+        prog_name = input("Please input a name for the program: ")
+        link = input(f"Please enter the download link for {prog_name}: ")
+
+        self.manager.add_program(prog_name, link)
         self._state_change = True
+
+        print("")
+        print(f"{prog_name} has now been added to the program list")
+        sleep(1)
+        self.continue_q_mark()
 
     def edit_program(self):
         self.manager.show_programs()
@@ -106,10 +115,24 @@ class TUI_Mngr:
         if not new_val is None:
             self.manager.edit_program(program_num, field, new_val)
 
+        print("")
+
+        if field == 1:
+            print(f"The program's name has been successfully changed to {new_val}")
+        else:
+            print(f"{self.manager.program_list[program_num].program_name}'s download link has successfully been changed to {new_val}")
+        sleep(1)
+        self.continue_q_mark()
+
     def update_link_info(self):
         if 'y' == input("This process can take a while to complete, continue? (y/n) "):
             self._state_change = True
             self.manager.update_link_info()
+
+            print("")
+            print("All links successfully updated")
+            sleep(1)
+            self.continue_q_mark()
     
     def install_programs(self):
         self.manager.download_setups()
@@ -124,15 +147,25 @@ class TUI_Mngr:
                 except OSError:
                     print(f"Something went wrong installing {program.program_name}, try using a different download link.\nIf you can find a link that has any kind of version information or has the display text: 'Download should start in a few seconds, -if not click here-'.")
                 self.continue_q_mark()
+
+            print("")
+            print("All programs successfully installed")
+            sleep(1)
+            self.continue_q_mark()
     
     def save_changes(self):
         if "y" == input("Save changes? (y/n) "):
             if self._state_change:
                 self.manager.write_programs()
                 self._state_change = False
-            else:
-                print("No changes to save")
+                print("")
+                print("All changes saved")
+                sleep(1)
                 self.continue_q_mark()
+            else:
+                print("")
+                print("No changes to save")
+                sleep(1)
     
     def remove_program(self):
         self.manager.show_programs()
