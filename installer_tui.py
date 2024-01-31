@@ -1,3 +1,4 @@
+import os
 from program_manager import ProgramManager
 from os import listdir, chdir, getcwd
 from subprocess import run as run_sb
@@ -5,12 +6,18 @@ from os import system
 
 class TUI_Mngr:
     def __init__(self) -> None:
+        # Used to track if the list of programs has been altered in any way
         self._state_change = False
         self.manager = ProgramManager()
+        # When an instance of TUI_Mngr has been instantiated, run the tui
         self.run()
 
     def load_config(self):
         pass    
+
+    def clear_screen(self):
+        # This method is abstracted out due to provide the avility to support multiple OSs
+        system("clear")
         
     def print_menu(self):
         print("-- PROGRAM INSTALLER --")
@@ -27,23 +34,21 @@ class TUI_Mngr:
         print("\n")
 
     def continue_q_mark(self):
+        # Abstracted away because it is used often
         input("Please enter to continue...")
     
-    def get_option(self, prompt: str, type: str):
+    def get_option_num(self, prompt: str) -> int:
+        # Used as an abstraction to safely get an option from the user
         resp = input(prompt)
 
-        if type == "int":
-            try:
-                return int(resp)
-            except ValueError:
-                print("Invalid input, please enter an integer.")
-                return self.get_option(prompt, type)
-        return resp
-    
-    def check_is_in_range(self, lower, upper, choice):
-        return (choice > lower and choice < upper)
+        try:
+            return int(resp)
+        except ValueError:
+            print("Invalid input, please enter an integer.")
+            return self.get_option_num(prompt)
     
     def method_dict(self, choice: int):
+        # Maps integers to methods
         methods = {
             1: self.this_help,
             2: self.show_programs,
@@ -55,12 +60,16 @@ class TUI_Mngr:
             9: self.save_changes,
         }
 
-        try:
-            methods.get(choice)()
-        except TypeError:
+        method = methods.get(choice)
+
+        if method is None:
             print("Invalid selection, please enter a valid option.")
+            return
+
+        method()
 
     def this_help(self):
+        # This is the help that will be displayed when the user selects the help option
         print("Program Installer")
         print("\nThis program is a TUI which allows you to create a list of programs including their download links for you to be able to easily install those programs all at once.")
         print("\nTo run the script just use:")
@@ -79,10 +88,12 @@ class TUI_Mngr:
     def edit_program(self):
         self.manager.show_programs()
         print("")
-        program_num = self.get_option("Enter the number of the program you would like to edit: ", "int") - 1
-        field = self.get_option("Enter the field which you would like to edit (1: Program Name 2: Download Link): ", "int")
+        program_num = self.get_option_num("Enter the number of the program you would like to edit: ") - 1
+        field = self.get_option_num("Enter the field which you would like to edit (1: Program Name 2: Download Link): ")
 
+        new_val = None
         choice_good = False
+
         while not choice_good:
             if field == 1:
                 new_val = input("Please enter the new name for the program: ")
@@ -95,7 +106,8 @@ class TUI_Mngr:
             else:
                 print(f"Please enter either '1' or '2'.")
 
-        self.manager.edit_program(program_num, field, new_val)
+        if not new_val is None:
+            self.manager.edit_program(program_num, field, new_val)
 
     def update_link_info(self):
         if 'y' == input("This process can take a while to complete, continue? (y/n) "):
@@ -130,34 +142,40 @@ class TUI_Mngr:
         print("")
 
         choice_made = False
+        choice = None
+        prog_num = -1
         
         while not choice_made:
-            prog_num = self.get_option("Enter the number of the program you would like to remove: ", "int") - 1
+            prog_num = self.get_option_num("Enter the number of the program you would like to remove: ") - 1
             if prog_num < 0 or prog_num > len(self.manager.program_list):
                 print(f"Please enter a number greater than zero and less than {len(self.manager.program_list)}")
                 continue
+            elif str(prog_num).lower() == 'c':
+                print("Program deletion aborted")
+                self.continue_q_mark()
+                return
             else:
                 choice_made = True
                 choice = input(f"Are you sure you want to delete {self.manager.program_list[prog_num].program_name}? (y/n) ")
 
-        if choice == 'y':
+        if choice == 'y' and not choice is None and prog_num != -1:
             self.manager.remove_program(prog_num)
             self._state_change = True
     
     def run(self):
         running = True
 
-        system("cls")
+        self.clear_screen()
         
         while running:
             self.print_menu()
-            choice = self.get_option("Enter your choice: ", "int")
+            choice = self.get_option_num("Enter your choice: ")
             if choice == 0:
                 running = False
                 continue
-            system("cls")
+            self.clear_screen()
             self.method_dict(choice)
-            system("cls")
+            self.clear_screen()
         
         if self._state_change:
             self.save_changes()
