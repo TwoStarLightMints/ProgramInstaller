@@ -12,9 +12,6 @@ class TUI_Mngr:
         # When an instance of TUI_Mngr has been instantiated, run the tui
         self.run()
 
-    def load_config(self):
-        pass    
-
     def clear_screen(self):
         # This method is abstracted out due to provide the avility to support multiple OSs
         system("clear")
