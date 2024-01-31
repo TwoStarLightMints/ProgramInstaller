@@ -1,3 +1,6 @@
+# TODO:
+    # [ ] move show_programs() to tui manager
+
 from tempfile import TemporaryDirectory
 from os.path import isfile
 import sqlite3
@@ -66,7 +69,10 @@ class ProgramManager:
         """
         print("(Program Name): (Program Download Link)")
         for program in self.program_list:
-            print(program)
+            print("+")
+            print(program.program_name)
+            print(program.download_link)
+            print("+")
         
     def add_program(self):
         """
