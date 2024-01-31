@@ -1,0 +1,2 @@
+# Used for making requests to the websites to download program installers from
+requests == 2.31.0
